@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Productos - Abel Alonzo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🛒 CRUD de Productos</h1>
+        <nav>
+            <a href="index.html" class="active">Productos</a>
+            <a href="crear.html">Crear Producto</a>
+        </nav>
+    </header>
+    <main>
+        <section class="productos-lista">
+            <h2>Lista de Productos</h2>
+            <div class="productos-table-wrapper">
+                <table class="productos-table" id="productos-table">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio Original</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productos-tbody">
+                        <!-- Productos dinámicos aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Hecho con ❤️ por Abel Alonzo</p>
+    </footer>
+    <script>
+        function crearFila(producto, idx) {
+            return `<tr>
+                <td><img src='${producto.imagen}' alt='${producto.nombre}' style='width:60px; height:60px; object-fit:cover; border-radius:8px;'></td>
+                <td>${producto.nombre}</td>
+                <td>${producto.descripcion}</td>
+                <td>$${producto.precioOriginal || ''}</td>
+                <td>$${producto.precio}</td>
+                <td><button class='btn-borrar' data-idx='${idx}'>Borrar</button></td>
+            </tr>`;
+        }
+        const productosTbody = document.getElementById('productos-tbody');
+        function renderProductos() {
+            let productos = JSON.parse(localStorage.getItem('productos'));
+            if (!productos || productos.length === 0) {
+                productos = [
+                    {
+                        nombre: 'Smartphone X',
+                        precio: 799,
+                        precioOriginal: 999,
+                        descripcion: 'El mejor smartphone del mercado, con IA integrada.',
+                        imagen: 'https://images.unsplash.com/photo-1513708927688-890ace92043b?auto=format&fit=crop&w=400&q=80'
+                    },
+                    {
+                        nombre: 'Auriculares Pro',
+                        precio: 199,
+                        precioOriginal: 299,
+                        descripcion: 'Sonido envolvente y cancelación de ruido activa.',
+                        imagen: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80'
+                    }
+                ];
+                productosTbody.innerHTML = productos.map((p, i) => crearFila(p, i)).join('');
+                document.querySelectorAll('.btn-borrar').forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = 0.5;
+                    btn.title = 'Agrega un producto para poder borrar';
+                });
+            } else {
+                productosTbody.innerHTML = productos.map((p, i) => crearFila(p, i)).join('');
+                document.querySelectorAll('.btn-borrar').forEach(btn => {
+                    btn.onclick = function() {
+                        let idx = parseInt(this.getAttribute('data-idx'));
+                        let productos = JSON.parse(localStorage.getItem('productos')) || [];
+                        productos.splice(idx, 1);
+                        localStorage.setItem('productos', JSON.stringify(productos));
+                        renderProductos();
+                    };
+                });
+            }
+        }
+        renderProductos();
+    </script>
+</body>
+</html>

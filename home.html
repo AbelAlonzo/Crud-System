@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - CRUD de Productos</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .loader-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        .loader {
+            border: 6px solid #e0e0e0;
+            border-top: 6px solid #2d5a80;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden { opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div class="loader-bg" id="loader-bg">
+        <div class="loader"></div>
+    </div>
+    <header style="display:none" id="main-header">
+        <h1>Bienvenido al CRUD de Productos</h1>
+        <nav>
+            <a href="index.html">Productos</a>
+            <a href="crear.html">Crear Producto</a>
+        </nav>
+    </header>
+    <main style="display:none" id="main-content">
+        <section style="text-align:center; margin-top:4rem;">
+            <h2 style="font-size:2.2rem; color:#2d5a80;">¡Gestiona tus productos de forma fácil y profesional!</h2>
+            <p style="font-size:1.1rem; color:#555; margin:1.5rem 0 2.5rem 0;">Bienvenido al sistema CRUD de productos. Puedes crear, ver y administrar tus productos de manera sencilla y elegante.</p>
+            <a href="index.html" style="background:#2d5a80; color:#fff; padding:1rem 2.2rem; border-radius:12px; text-decoration:none; font-size:1.1rem; font-weight:600; box-shadow:0 2px 8px #2d5a8022; transition:background 0.2s;">Ir a Productos</a>
+        </section>
+    </main>
+    <footer style="display:none" id="main-footer">
+        <p>Hecho con ❤️ por Abel Alonzo</p>
+    </footer>
+    <script>
+        setTimeout(function() {
+            document.getElementById('loader-bg').classList.add('hidden');
+            document.getElementById('main-header').style.display = '';
+            document.getElementById('main-content').style.display = '';
+            document.getElementById('main-footer').style.display = '';
+        }, 2000);
+    </script>
+</body>
+</html> 

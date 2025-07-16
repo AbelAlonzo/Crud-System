@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Producto - CRUD de Productos</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+        document.getElementById('form-crear-producto').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const precio = parseFloat(document.getElementById('precio').value);
+            const precioOriginal = parseFloat(document.getElementById('precio-original').value);
+            const descripcion = document.getElementById('descripcion').value.trim();
+
+            const producto = { nombre, precio, precioOriginal, descripcion };
+            try {
+                await addDoc(collection(db, "products"), producto);
+                // Guardar en localStorage (opcional)
+                let productos = JSON.parse(localStorage.getItem('productos')) || [];
+                productos.push(producto);
+                localStorage.setItem('productos', JSON.stringify(productos));
+                window.location.href = 'index.html';
+            } catch (e) {
+                alert('Error al guardar en Firestore: ' + e.message);
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>🛒 CRUD de Productos</h1>
+        <nav>
+            <a href="index.html">Productos</a>
+            <a href="crear.html" class="active">Crear Producto</a>
+        </nav>
+    </header>
+    <main>
+        <form class="form-crear-producto" id="form-crear-producto">
+            <h2>Crear Nuevo Producto</h2>
+            <label for="nombre">Nombre del producto</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej: Laptop Gamer Ultra">
+
+            <label for="precio">Precio</label>
+            <input type="number" id="precio" name="precio" required min="0" step="0.01" placeholder="Ej: 1200">
+
+            <label for="precio-original">Precio original</label>
+            <input type="number" id="precio-original" name="precio-original" min="0" step="0.01" placeholder="Ej: 1500">
+
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" rows="3" required placeholder="Describe el producto..."></textarea>
+
+            <button type="submit">Crear Producto</button>
+        </form>
+    </main>
+    <footer>
+        <p>Hecho con ❤️ por Abel Alonzo</p>
+    </footer>
+</body>
+</html> 
